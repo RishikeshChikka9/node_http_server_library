@@ -6,8 +6,8 @@ const routes = [{
 	data: "page not found"
 }];
 
-function routes_assigner(url, status_code, content_type, data) {
-	routes.unshift({
+function routes_assigner(route, url, status_code, content_type, data) {
+	route.unshift({
 		path: url,
 		status_code: status_code,
 		content_type: content_type,
@@ -22,7 +22,9 @@ function route_object_returner(route, url) {
 	return route[route.length -1];
 }
 
-routes_assigner('/', 200, 'text/plain', 'hello world');
+function route(url, status_code, content_type, data) {
+	routes_assigner(routes, url, status_code, content_type, data);
+}
 
 let handler = (req, res) => {
 	const route = route_object_returner(routes, req.url);
@@ -34,3 +36,7 @@ let handler = (req, res) => {
 const server = http.createServer(handler);
 
 server.listen(80, () => console.log('server runnig'));
+
+module.exports = {
+	route
+}
